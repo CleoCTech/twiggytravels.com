@@ -1,0 +1,488 @@
+<template>
+  <div>
+    <Head title="Tour Details" />
+    <div v-if="isLoading" class="preloader">
+        <div class="loader">
+            <div class="sbl-half-circle-spin"></div>
+        </div>
+    </div>
+
+    
+     <!-- Banner Section -->
+    
+    <section class="banner">
+        <div class="container mx-auto flex items-center justify-start h-full">
+            <div class="text-white">
+                <h1 class="text-3xl font-bold">Blog > Article Title</h1>
+            </div>
+        </div>
+    </section>
+    
+    <div class="inner-banner "
+    v-bind:style="{ 'background-image': 'url(' + '/storage/destinations/cover_images/'+cardData.cover_image + ')' }"
+     >
+      <div class="container">
+        <div class="inner-title">
+          <ul>
+            <li>
+              <Link :href="route('home')" >Home</Link>
+            </li>
+            <li><i class="bx bx-chevron-right"></i></li>
+            <li>Tours Details</li>
+          </ul>
+          <h3>{{ pageTitle }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-details-area pt-100 pb-70">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="room-details-side">
+              <div class="side-bar-form">
+                <h3>Booking Sheet</h3>
+                <form @submit.prevent="book">
+                  <div class="row align-items-center">
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Name</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            v-model="form2.name"
+                            class="form-control"
+                            placeholder="Name"
+                          />
+                          <span class="input-group-addon"></span>
+                        </div>
+                        <i class="bx bxs-user"></i>
+                      </div>
+                      <div v-if="form2.errors.name" v-text="form2.errors.name" style="color:red"></div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Email</label>
+                        <div class="input-group">
+                          <input
+                            type="email"
+                            v-model="form2.email"
+                            class="form-control"
+                            placeholder="example@example.com"
+                          />
+                          <span class="input-group-addon"></span>
+                        </div>
+                        <i class="bx bxs-email"></i>
+                        <div v-if="form2.errors.email" v-text="form2.errors.email" style="color:red"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            v-model="form2.phone_no"
+                            class="form-control"
+                            placeholder="(+254)7########"
+                          />
+                          <span class="input-group-addon"></span>
+                        </div>
+                        <i class="bx bxs-phone"></i>
+                        <div v-if="form2.errors.phone_no" v-text="form2.errors.phone_no" style="color:red"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Check in</label>
+                        <Datepicker v-model="form2.check_in" class="form-control" format="dd-MM-yyyy" type="date" :lowerLimit="new Date()" placeholder="Start Typing ..." textInput />
+
+                        <i class="bx bxs-calendar"></i>
+                      </div>
+                      <div v-if="form2.errors.check_in" v-text="form2.errors.check_in" style="color:red"></div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Check Out</label>
+                        <div class="input-group">
+                          <Datepicker v-model="form2.check_out" class="form-control" format="dd-MM-yyyy" type="date" :lowerLimit="new Date()" placeholder="Start Typing ..." textInput />
+                          <span class="input-group-addon"></span>
+                        </div>
+                        <i class="bx bxs-calendar"></i>
+                      </div>
+                        <div v-if="form2.errors.check_out" v-text="form2.errors.check_out" style="color:red"></div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Country of Residency</label>
+                        <select v-model="form2.resident_country" class="form-control">
+                          <option value="Angola">Angola</option>
+                          <option value="Afghanistan">Afghanistan</option>
+                          <option value="Kenya">Kenya</option>
+                          <option value="UK">UK</option>
+                          <option value="US">US</option>
+                          <option value="Germany">Germany</option>
+                          <option value="Uganda">Uganda</option>
+                          <option value="Tanzania">Tanzania</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <div v-if="form2.errors.resident_country" v-text="form2.errors.resident_country" style="color:red"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Number of Adults</label>
+                        <select v-model="form2.adults_no" class="form-control">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                        <div v-if="form2.errors.adults_no" v-text="form2.errors.adults_no" style="color:red"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Number of Kids</label>
+                        <select  v-model="form2.children_no" class="form-control">
+                          <option value="0">0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </select>
+                        <div v-if="form2.errors.children_no" v-text="form2.errors.children_no" style="color:red"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label>Message</label>
+                        <div class="form-group">
+                        <textarea
+                          name="message"
+                          class="form-control"
+                          cols="30"
+                          rows="8"
+                          v-model="form2.message"
+                          data-error="Write your message"
+                          placeholder="Message.... "
+                        ></textarea>
+                      </div>
+                      <div v-if="form2.errors.message" v-text="form2.errors.message" style="color:red"></div>
+                      </div>
+                    </div>
+                    <input type="hidden" id="destination_id2" name="destination_id2" v-model="form2.destination_id" />
+                    <div class="col-lg-12 col-md-12">
+                        <div v-if="form2.processing" class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                      <button
+                        type="submit"
+                        class="default-btn btn-bg-three border-radius-5"
+                        :data-loading-text="form2.processing? 'Loading...' : ''" :class="form2.processing? 'not-allowed hidden' : ''"
+                        :disabled="form2.processing"
+                      >
+                        Book Now
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="room-details-article">
+              <div class="room-details-slider owl-carousel owl-theme">
+                <div class="room-details-item">
+                  <img
+                    :src="'/storage/destinations/cover_images/'+cardData.cover_image"
+                    alt="Images"
+                  />
+                </div>
+                <div class="room-details-item">
+                  <img
+                    :src="'/storage/destinations/cover_images/'+cardData.cover_image"
+                    alt="Images"
+                  />
+                </div>
+                <div class="room-details-item">
+                  <img
+                   :src="'/storage/destinations/cover_images/'+cardData.cover_image"
+                    alt="Images"
+                  />
+                </div>
+              </div>
+              <div class="room-details-title">
+                <h2>
+                  {{ cardData.title }}
+                </h2>
+                <ul>
+                  <li style="color: #EE786C" v-for="(price, index) in prices" :key="index" >
+
+                    {{ price.price_category.name }} : KES.{{ price.price }}
+                  </li>
+
+                </ul>
+                <ul>
+                  <li>Validity : {{ cardData.validity }}</li>
+                  <li>Tour Type : {{ cardData.destination_category.name }}</li>
+                </ul>
+              </div>
+              <div class="room-details-content">
+                <p v-html="cardData.content">
+                </p>
+              </div>
+              <div class="room-details-review">
+                <h2>Clients Review and Ratting's</h2>
+                <div class="review-ratting">
+                  <h3>Your ratting:</h3>
+                  <input type="hidden" id="rating" name="rating" v-model="form.ratting" />
+                  <input type="hidden" id="destination_id" name="destination_id" v-model="form.destination_id" />
+                  <div v-if="form.errors.destination_id" v-text="form.errors.destination_id" style="color:red"></div>
+                  <i class="bx bx-star" id="1" value="1"></i>
+                  <i class="bx bx-star" id="2" value="2"></i>
+                  <i class="bx bx-star" id="3" value="3"></i>
+                  <i class="bx bx-star" id="4" value="4"></i>
+                  <i class="bx bx-star" id="5" value="5"></i>
+                </div>
+                <form @submit.prevent="submit">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <label class="" for="name">Name:</label>
+                        <div class="form-group">
+                            <input class="form-control" type="text"
+                            v-model="form.name"
+                            name="" id="" placeholder="Name">
+                        </div>
+                        <div v-if="form.errors.name" v-text="form.errors.name" style="color:red"></div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <label class="" for="email">Email:</label>
+                        <div class="form-group">
+                            <input class="form-control" type="email" name="email"
+                            v-model="form.email"
+                            id="" placeholder="me@example.com">
+                        </div>
+                        <div v-if="form.errors.email" v-text="form.errors.email" style="color:red"></div>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                      <div class="form-group">
+                        <textarea
+                          name="message"
+                          class="form-control"
+                          cols="30"
+                          rows="8"
+                          v-model="form.review"
+                          data-error="Write your message"
+                          placeholder="Write your review here.... "
+                        ></textarea>
+                      </div>
+                      <div v-if="form.errors.review" v-text="form.errors.review" style="color:red"></div>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                        <div v-if="form.processing" class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                      <button type="submit" class="default-btn btn-bg-three"
+                        :data-loading-text="form.processing? 'Loading...' : ''" :class="form.processing? 'not-allowed hidden' : ''"
+                       :disabled="form.processing">
+                        Submit Review
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="room-details-other pb-70">
+      <div class="container">
+        <div class="room-details-text">
+          <h2>Our Related Offer</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-6" v-for="(offer, index) in relatedOffers" :key="index">
+
+            <div class="room-card-two">
+              <div class="row align-items-center">
+                <div class="col-lg-5 col-md-4 p-0">
+                  <div class="room-card-img">
+                    <Link :href="'/local-destination/'+offer.title.replace(/ /g,'-').toLowerCase()">
+                      <img :src="'/storage/destinations/cover_images/'+offer.cover_image"
+                        alt="Images"
+                      />
+                    </Link>
+                  </div>
+                </div>
+                <div class="col-lg-7 col-md-8 p-0">
+                  <div class="room-card-content">
+                    <h3>
+                      <Link :href="'/'+url+'/'+offer.title.replace(/ /g,'-').toLowerCase()"> {{ offer.title }}</Link>
+                    </h3>
+                    <span> {{test(offer.id)}} </span>
+                    <!-- <div class="rating">
+                      <i class="bx bxs-star"></i>
+                      <i class="bx bxs-star"></i>
+                      <i class="bx bxs-star"></i>
+                      <i class="bx bxs-star"></i>
+                      <i class="bx bxs-star"></i>
+                    </div> -->
+                    <p v-html="offer.content.length > 250? offer.content.substring(0,250)+'...' : offer.content"></p>
+                    <ul>
+                      <li><i class="bx bx-user" v-html="offer.extra_info"></i></li>
+                      <li><i class="bx bx-time"></i>Validity :  {{ offer.validity }}</li>
+                    </ul>
+                    <!-- <ul>
+                      <li><i class="bx bx-show-alt"></i> Sea Balcony</li>
+                      <li><i class="bx bxs-hotel"></i> Kingsize / Twin</li>
+                    </ul> -->
+                    <Link :href="'/local-destination/'+offer.title.replace(/ /g,'-').toLowerCase()" class="book-more-btn"> Book Now</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import {onMounted} from 'vue'
+import axios from 'axios'
+// import Datepicker from '@vuepic/vue-datepicker';
+// import '@vuepic/vue-datepicker/dist/main.css'
+import { useForm } from '@inertiajs/vue3' 
+import { Head, Link } from "@inertiajs/vue3";
+import { ref, watch } from 'vue';
+
+    const loading = ref(true);
+    const props =  defineProps({
+        cardData:Object,
+        pageTitle: String,
+        headerImage: String,
+        tourType: String,
+        relatedOffers: Object,
+        url: String,
+        prices: Object,
+    });
+
+    let form = useForm({
+        name: '',
+        email: '',
+        review: '',
+        ratting: 0,
+        destination_id: '',
+        value: '',
+        start_date: '',
+        end_date: '',
+
+    });
+    let form2 = useForm({
+        name: '',
+        email: '',
+        phone_no: '',
+        resident_country: '',
+        destination_id: '',
+        check_in: '',
+        check_out: '',
+        adults_no: '',
+        children_no: '',
+        message: '',
+    });
+    onMounted(() => {
+        form.destination_id = props.cardData.id;
+        form.destination_id = props.cardData.id;
+        form2.destination_id = props.cardData.id;
+        // loading = false;
+        // console.log(props.cardData.cover_image)
+    })
+    watch(() => loading.value, () => {
+      // Set the loading state to false once the main content has finished loading
+      loading.value = false;
+    });
+    let submit = () => {
+        form.post('/customer-ratting');
+    }
+    let book = () => {
+        form2.post('/customer-booking');
+    }
+    let value = '';
+
+    function test(id){
+        // form.get('/test')
+        var value2 ='';
+        axios.get('/get-ratting/'+id)
+            .then((response)=>{
+                value = JSON.stringify(response.data) ;
+                // console.log(value)
+                value2 = value;
+                return value2;
+            })
+            .catch(error => console.log(error))
+        console.log("Value 2:"+value2)
+
+    }
+
+    $(document).ready(function (){
+      // let ratting = ''
+      var self = this;
+      var ratting2 = '';
+      $(".review-ratting .bx").click(
+        function () {
+          if ($(this).hasClass("bxs-star")){
+            var min = $(this).attr('value');
+            console.log(ratting2);
+            for (let i = 1; i <= ratting2; i++) {
+              var element =  $('#'+i);
+              element.removeClass("bxs-star");
+              element.addClass("bx-star");
+            }
+            console.log("Min: "+min);
+            for (let i = min; i >= 1; i--) {
+              var element =  $('#'+i);
+              element.removeClass("bx-star");
+              element.addClass("bxs-star");
+            }
+           ratting2 = min;
+           form.ratting=min;
+           $('#rating').val(min);
+          } else {
+            var max = $(this).attr('value');
+            for (let i = 1; i <= max; i++) {
+              var element =  $('#'+i);
+              element.removeClass("bx-star");
+              element.addClass("bxs-star");
+            }
+            ratting2 = max;
+            $('#rating').val(max);
+            form.ratting=max;
+            console.log(ratting2);
+          }
+
+        },
+      );
+    });
+</script>
+
+<style scoped>
+    .not-allowed {
+        cursor: not-allowed !important;
+    }
+    .hidden{
+        display:none;
+    }
+    .inner-bg9 {
+     /* background-image: url(../public/assets/img/banner2.jpeg); */
+    }
+    .review-ratting .bx:hover {
+
+    }
+</style>
