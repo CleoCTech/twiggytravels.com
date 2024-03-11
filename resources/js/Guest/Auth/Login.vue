@@ -11,11 +11,13 @@ import TextInput from '@/Components/TextInput.vue';
 defineProps({
     canResetPassword: Boolean,
     status: String,
+    error: String,
+    redirectUrl: String,
 });
 
 const form = useForm({
-    email: '',
-    password: '',
+    email: 'admin@wenlasystems.com',
+    password: '@dm1n321#',
     remember: false,
 });
 
@@ -37,6 +39,7 @@ const submit = () => {
             <AuthenticationCardLogo />
         </template>
 
+        <p v-if="error" class="text-red-600">{{ error }}</p>
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>

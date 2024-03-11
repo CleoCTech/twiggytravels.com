@@ -1,7 +1,7 @@
 <template>
-    <button v-if="theme == 'success'" :type="type" class="inline-flex bg-transparent bg-green-600  text-sm font-semibold py-1 px-2 hover:shadow text-white rounded-full shadow-md"><slot></slot></button>
-    <button v-if="theme == 'error'" :type="type" class="inline-flex bg-transparent bg-red-500 text-sm font-semibold py-1 px-2 hover:shadow text-white rounded-full shadow-md"><slot></slot></button>
-    <button v-if="theme == 'info'" :type="type" class="inline-flex bg-transparent bg-blue-500 text-sm font-semibold py-1 px-2 hover:shadow text-white rounded-full shadow-md"><slot></slot></button>
+    <button v-if="theme == 'success'" :type="type" class="btn dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-emerald-500"><slot></slot></button>
+    <button v-if="theme == 'error'" :type="type" class="btn dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-rose-500"><slot></slot></button>
+    <button v-if="theme == 'info'" :type="type" class="btn dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300"><slot></slot></button>
 </template>
 <script>
     export default{

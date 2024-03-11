@@ -80,15 +80,15 @@
     </div>
 
     <!-- Paginator -->
-    <Pagination :links ="tours.links" class="mt-6 mb-3" />
+    <!-- <Pagination :links ="tours.links" class="mt-6 mb-3" /> -->
   </div>
 </template>
 
 <script setup>
 import {onMounted} from 'vue'
-import { Link } from '@inertiajs/inertia-vue3'
-import Pagination from '@/Guest/Partials/Pagination'
-import {useForm} from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/vue3'
+// import Pagination from '@/Guest/Partials/Pagination'
+import { useForm } from '@inertiajs/vue3'
 import { ref, watch } from 'vue';
 
 const loading = ref(true);

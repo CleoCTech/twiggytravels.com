@@ -12,17 +12,19 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\Admin\UuidTrait;
 use Illuminate\Support\Facades\Session;
+use Laratrust\Contracts\LaratrustUser;
+use Laratrust\Traits\HasRolesAndPermissions;
 
-class User extends Authenticatable
+class User extends Authenticatable implements LaratrustUser
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
-    use HasTeams;
+    // use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
     use UuidTrait;
-
+    use HasRolesAndPermissions;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +32,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'user_category', 'status',
     ];
 
     /**
@@ -76,4 +78,31 @@ class User extends Authenticatable
     //     return \Uuid::generate();
 
     // }
+
+ 	public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
+    public static function options($column)
+    {
+        if($column == 'status'){
+            $options = [
+                ['id' => 1,'caption' => 'Inactive', 'color' => 'bg-yellow-500'],
+                ['id' => 2,'caption' => 'Active', 'color' => 'bg-green-500'],
+            ];
+        }
+        if($column == 'user_category'){
+            $options = [
+                ['id' => 2,'caption' => 'Regular', 'color' => 'bg-yellow-500'],
+                ['id' => 100,'caption' => 'Admin', 'color' => 'bg-green-500'],
+            ];
+        }
+        if(isset($options)){
+            return $options;
+        }else{
+            return null;
+        }
+    }
+
 }

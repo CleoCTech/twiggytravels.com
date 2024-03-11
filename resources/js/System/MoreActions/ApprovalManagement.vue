@@ -76,7 +76,7 @@
     import xSelect from '@/Components/Select.vue'
     import MenuBarTabsMixin from '@/System/Mixins/MenuBarTabsMixin.js'
     import { usePage } from '@inertiajs/vue3'
-    import {Inertia} from "@inertiajs/inertia";
+   import { router } from '@inertiajs/vue3'
     import VueLoadingMixin from '@/System/Mixins/VueLoadingMixin.js'
     export default{
         components:{xButton,GDialog,xTextarea,xSelect},

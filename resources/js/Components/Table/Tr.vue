@@ -4,10 +4,10 @@
     </tr>
 </template>
 <script>
-    import {Inertia} from "@inertiajs/inertia";
+   import { router } from '@inertiajs/vue3'
     export default{
         props:{row:{default:0},url:{default:''},isSelected:{default:false}},
-        components:{Inertia},
+        components:{router},
         inject: ['onRowClick'],
         data(){
             return{
@@ -28,7 +28,7 @@
             },
             onDblClick(){
                 if(this.url != ''){
-                    Inertia.visit(this.url);
+                    router.visit(this.url);
                 }
             }
         }

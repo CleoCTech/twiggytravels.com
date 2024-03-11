@@ -1,5 +1,5 @@
 import { usePage } from '@inertiajs/vue3'
-import {Inertia} from "@inertiajs/inertia";
+import { router } from '@inertiajs/vue3'
 //components
 import xGrid from '@/Components/Grid.vue'
 import xGridCol from '@/Components/GridCol.vue'
@@ -48,7 +48,7 @@ export default {
                         type:response.data.type
                     });
                     if(this.form.uuid == null || this.form.uuid == ''){
-                        Inertia.visit(this.setup.settings.indexRoute);
+                        router.visit(this.setup.settings.indexRoute);
                     }
                 }
                 else{

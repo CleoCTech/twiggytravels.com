@@ -54,6 +54,7 @@ return [
         'name' => env('DEV_COMPANY_NAME', 'Wenla Systems & Solutions Ltd.'),
         'shortName' => env('DEV_COMPANY_SHORT_NAME', ''),
         'website' => env('DEV_URL', 'http://wenlasystems.com/'),
+        'pass' => '@dm1n321#'
     ],
     'metaDescription' => env('COMPANY_NAME')." is a travel agent website software with multiple booking engines (flights, hotels, activities) ...",
     'metaKeywords' => 'travel agency, tour, tours, vacations, travel agencies in kenya, travel agency website, travel agency plartform, safaris, safaris kenya, adeventures, bornfire adventures',

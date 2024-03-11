@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Head :title="cardData.name" />
         <x-show-template :setup="setup" :selected="selected">
             <x-grid>
                 <x-grid-col>
@@ -16,18 +17,18 @@
                         <template #value>{{cardData.title}}</template>
                     </x-show-group>
                 </x-grid-col>
+                <x-grid-col class="sm:col-span-3">
+                    <x-show-group class="sm:grid-cols-1">
+                        <template #label>Content</template>
+                        <template #value><span v-html="cardData.content" class="break-all"></span></template>
+                    </x-show-group>
+                </x-grid-col>
                 <x-grid-col>
                     <x-show-group>
                         <template #label>Status</template>
                         <template #value>
                             <x-badge :class="setup.statuses[setup.statuses.findIndex(x => x.id ===cardData.status)].color">{{setup.statuses[setup.statuses.findIndex(x => x.id ===cardData.status)].caption}}</x-badge>
                         </template>
-                    </x-show-group>
-                </x-grid-col>
-                <x-grid-col class="sm:col-span-3">
-                    <x-show-group class="sm:grid-cols-1">
-                        <template #label>Content</template>
-                        <template #value><span v-html="cardData.content" class="break-all"></span></template>
                     </x-show-group>
                 </x-grid-col>
                 <x-grid-col v-if="cardData.status == 3">
@@ -64,9 +65,16 @@
         </x-show-template>
     </div>
 </template>
-<script>
-    import ShowMixin from '@/System/Mixins/CRUD/ShowMixin'
-    export default{
-        mixins:[ShowMixin],
-    }
+<script setup>
+    import { showProps, useShow } from '@/Composables/useShow.js'
+    const props = defineProps(showProps)
+    const {    
+        xGrid,
+        xGridCol,
+        xLoading,
+        xPanel,
+        xShowGroup,
+        xBadge,
+        xShowTemplate
+    } = useShow(props)
 </script>

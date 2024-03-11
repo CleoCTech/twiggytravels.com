@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 
 trait LayoutTrait
 {
-    public $listData = [],$cardData,$viewData= [],$prevRecord = [],$searchParams = [], $return, $actionRoutes = [],$defaultModel,$setup,$isSearch, $isReltionship, $relationName;
+    public $listData = [],$cardData,$viewData= [],$prevRecord = [],$searchParams = [], $return, $actionRoutes = [],$defaultModel,$setup,$isSearch, $isReltionship, $relationName, $paginateRelation;
     public $pkeyCol, $pKey =null,$isCommit = true,$pageTitle;
     public $defReportPage = 'Admin/Reports/Filters/Default';
     //

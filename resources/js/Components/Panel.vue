@@ -1,6 +1,7 @@
 <template>
-    <div class="flex justify-center">
-        <div class="panel rounded-mdx w-screen sm:w-full $maxWidth">
+    <div class="border-t border-slate-200 dark:border-slate-700">
+        <div class="space-y-8 mt-8">
+            <!-- <div class="grid gap-5 md:grid-cols-3"></div> -->
             <!-- <div class="panel-header bg-theme1 flex justify-center py-1 px-1 text-white text-sm w-full">
                 <slot name="title"></slot>
             </div> -->

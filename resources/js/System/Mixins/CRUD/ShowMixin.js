@@ -1,5 +1,5 @@
 import { usePage } from '@inertiajs/vue3'
-import {Inertia} from "@inertiajs/inertia";
+import { router } from '@inertiajs/vue3'
 //components
 import xGrid from '@/Components/Grid.vue'
 import xGridCol from '@/Components/GridCol.vue'

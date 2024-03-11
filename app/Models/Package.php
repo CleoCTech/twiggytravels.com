@@ -7,15 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Admin\SearchTrait;
 use App\Traits\Admin\ColumnsTrait;
 use App\Traits\Admin\UuidTrait;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\Str;
 
 class Package extends Model
 {
     use HasFactory;
-    use UuidTrait;
+    // use UuidTrait;
     use SearchTrait;
     use ColumnsTrait;
+    use Sluggable;
 
     protected $guarded = [];
+    protected $keyType = 'int';
+    public $incrementing = true;
     protected $casts = [
         'created_at'  => 'date:d-M-Y',
         'updated_at'  => 'date:d-M-Y',
@@ -24,6 +29,28 @@ class Package extends Model
     // protected $hidden = [
     //     'id',
     // ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->uuid = (string) Str::uuid();
+        });
+    }
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
+    public function getRouteKey()
+    {
+        return $this->uuid;
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('uuid', $value)->firstOrFail();
+    }
+    
     public static function getTableName()
     {
         return with(new static)->getTable();
@@ -43,5 +70,18 @@ class Package extends Model
         }else{
             return null;
         }
+    }
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }

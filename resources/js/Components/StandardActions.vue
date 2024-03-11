@@ -17,11 +17,12 @@
     import xLink from '@/Components/Link.vue'
     import xMenuBarItem from '@/Components/MenuBarItem.vue'
     import xInput from '@/Components/Input.vue'
-    import { Inertia } from '@inertiajs/inertia'
+    // import { router } from '@inertiajs/vue3'
+    import { router } from '@inertiajs/vue3'
     import { notify } from "@kyvg/vue3-notification";
     import { usePage,Link } from '@inertiajs/vue3'
     export default {
-        components:{xButton,xLink,xInput,Inertia,notify,xMenuBarItem},
+        components:{xButton,xLink,xInput,router,notify,xMenuBarItem},
         props:{
             setup:{default:Object},
             selected:{default:[]},
@@ -79,7 +80,7 @@
                 }else{
                     url = url+'+all='+this.searchKeyword;
                 }
-                Inertia.visit(url, {
+                router.visit(url, {
                     only: ['listData'],
                 })
             },

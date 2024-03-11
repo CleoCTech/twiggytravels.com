@@ -8,21 +8,23 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <!-- custom -->
-
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/app.css')}}" />
+       
         <!-- Scripts -->
         @routes
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        {{-- @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"]) --}}
+        @vite(['resources/js/app.js'])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-inter antialiased bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400">
         @inertia
-
-        @env ('local')
+        <div class="layout-wrapper layout-content-navbar">
+           
+            <div class="layout-overlay layout-menu-toggle"></div>
+        </div>
+        {{-- @env ('local')
             <script src="http://localhost:3000/browser-sync/browser-sync-client.js"></script>
-        @endenv
+        @endenv --}}
     </body>
 </html>

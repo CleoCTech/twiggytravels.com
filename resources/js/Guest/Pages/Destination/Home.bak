@@ -1,0 +1,27 @@
+ <div class="">
+                <div class="flex justify-between items-center py-5">
+                    <div class="w-1/2">
+                        <img src="/assets/images/trees_1658526081.jpeg"  class="w-full h-25" style="max-height: 600px;">
+
+                        <h2 class="text-5xl font-semibold text-gray-800">About Twiggy Travels</h2>
+                        <h3 class="text-xl font-semibold text-gray-600 mt-4">Twiggy travels is a tour and travel company based in Kenya.</h3>
+                        <p class="text-gray-600 mt-1">The company offers unsurpassed and affordable tour services for groups, individuals, couples and corporates. Our general aim is to ensure that the clients get the best services and that their varied needs are equitably met. 
+                            We do not have an excuse of not attaining the quality desired by our clients. Twiggy travels offers varied services ranging from tour, team building, valentine packages, SGR bookings to Hotel bookings across Kenya. 
+                            The staff members are highly qualified with adequate skills necessary to steer and satisfy the needs of our clients. </p>
+                    </div>
+                    <div class="w-1/2">
+                        <img src="/assets/images/ocean_bank_1658560210.jpeg"  class="w-full h-25" style="max-height: 600px;">
+                        <!-- <img src="https://www.emprenderconactitud.com/img/fidelizamas.png"  class="w-full h-auto"> -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="300" height="300">
+                           
+                            <g fill="#b56952">
+                              <circle cx="30" cy="25" r="2" />
+                              <circle cx="20" cy="40" r="1.5" />
+                              <circle cx="60" cy="20" r="2" />
+                              <circle cx="80" cy="35" r="1.5" />
+                              <circle cx="45" cy="12" r="1.5" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>

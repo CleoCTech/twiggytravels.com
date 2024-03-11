@@ -18,7 +18,7 @@
     import xSelect from '@/Components/Select.vue'
     import xInput from '@/Components/Input.vue'
     import xButton from '@/Components/Button.vue'
-    import { Inertia } from '@inertiajs/inertia'
+    import { router } from '@inertiajs/vue3'
     export default{
         components:{xSelect,xInput,xButton},
         props:{columns:Object},

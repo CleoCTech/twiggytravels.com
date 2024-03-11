@@ -11,6 +11,14 @@ import xTabletr from '@/Components/Table/Tr.vue'
 import xBadge from '@/Components/Badge.vue'
 import xIndexTemplate from '@/System/Pages/Templates/CRUD/Index.vue'
 
+//Mosaic Components
+import ThCheckbox from '@/Components/Mosaic/Table/ThCheckbox.vue'; 
+import TdCheckbox from '@/Components/Mosaic/Table/TdCheckbox.vue'; 
+import Th from '@/Components/Mosaic/Table/Th.vue'; 
+import Td from '@/Components/Mosaic/Table/Td.vue'; 
+import Tr from '@/Components/Mosaic/Table/Tr.vue'; 
+import Table from '@/Components/Mosaic/Table/Table.vue'
+
 export const indexProps = {
     setup:Object,
     listData:Object,
@@ -19,30 +27,50 @@ export const indexProps = {
 const selected = ref([]);
 const isMultipleSelect = ref(false);
 
-export const useIndex = (props) => {
+const selectedItems = ref([]);
+const selectedItemsMap  = ref([]);
 
+export const useIndex = (props) => {
+    
     function onCheck(item){
-        if(selected.indexOf(item) === -1){
-            selected.push(item);
+        if(selected.value.indexOf(item) === -1){
+            selected.value.push(item);
         }else{
-            selected.splice(selected.indexOf(item),1);
+            selected.value.splice(selected.value.indexOf(item),1);
+        }
+    }
+    function handleToggleSelectAll(value) {
+        if (value) {
+            // Select all items
+            selectAll.value = !selectAll.value;
+            emits('toggle-select-all', selectAll.value);
+        } else {
+            // Deselect all items
+            selectedItems.value = [];
         }
     }
     function onRowClick(item){
-        console.log(item)
         selected.value = [];
         selected.value.push(item);
-        console.log(selected)
     }
     function isSelected(item){
-        return selected.value.indexOf(item) === -1
-        // if(selected.indexOf(item) === -1){
-        //     return false;
-        // }else{
-        //     return true;
-        // }
+        // return selected.value.indexOf(item) === -1
+        if(selected.value.indexOf(item) === -1){
+            return false;
+        }else{
+            return true;
+        }
     }
 
+    function destroy(data){
+        if(selected.value.length > 0){
+            if(confirm("Do you really want to delete this record(s)?")){
+                console.log('Deleting selected...');
+            }
+        } else{
+            console.log('length : 0');
+        }
+    }
     watch(isMultipleSelect, (newV, oldV) => {
         if(newV == false){
             selected.value = [];
@@ -61,6 +89,17 @@ export const useIndex = (props) => {
         xBadge,
         xIndexTemplate,
         selected,
-        isMultipleSelect
+        isMultipleSelect,
+        destroy,
+
+        ThCheckbox,
+        TdCheckbox,
+        selectedItemsMap,
+        selectedItems,
+        handleToggleSelectAll,
+        Th,
+        Td,
+        Tr,
+        Table
     }
 }

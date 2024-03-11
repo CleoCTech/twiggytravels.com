@@ -26,7 +26,7 @@
                         type:response.data.type
                     });
                     this.loadingHideFullPage();
-                    Inertia.visit('/system/system-action');
+                    router.visit('/system/system-action');
                 }).catch((error) => {
                     this.$notify({
                         text:response.data.message,

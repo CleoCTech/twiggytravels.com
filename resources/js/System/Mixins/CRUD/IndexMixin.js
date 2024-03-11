@@ -1,5 +1,6 @@
 import { usePage } from '@inertiajs/vue3'
-import {Inertia} from "@inertiajs/inertia";
+import { router } from '@inertiajs/vue3'
+
 //components
 import xTable from '@/Components/Table/Table.vue'
 import xTabletd from '@/Components/Table/Td.vue'

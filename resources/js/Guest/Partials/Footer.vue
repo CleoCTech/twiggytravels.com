@@ -10,6 +10,7 @@ const {notification} = useNotify();
 
 const footerData = ref({});
 const isLoading = ref(true);
+
 onMounted(() => {
     getFooterData();
 })
@@ -62,9 +63,9 @@ function getFooterData(){
         <div class="max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8">
           <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <div>
-            <img src="#" class="mr-5 h-6 sm:h-9" alt="logo" />
+            <img src="/assets/images/TwiggyLogo.svg" class="mr-5 h-6 sm:h-9" alt="logo" />
               <p class="max-w-xs mt-4 text-sm text-gray-600">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, accusantium.
+                {{footerData.companyInfo.about_short}}
               </p>
               <div class="flex mt-8 space-x-6 text-gray-600">
                 <a class="hover:opacity-75" href target="_blank" rel="noreferrer">
@@ -146,8 +147,8 @@ function getFooterData(){
               </div>
             </div>
           </div>
-          <p class="mt-8 text-xs text-gray-800">
-            © 2022 Comany Name
+          <p class="text-gray-500 text-sm">
+            &copy;  {{new Date().getFullYear()}} {{footerData.companyInfo.company_name}}
           </p>
         </div>
     </footer>

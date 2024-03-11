@@ -9,6 +9,7 @@ use App\Traits\Admin\ColumnsTrait;
 use App\Traits\Admin\UuidTrait;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Destination extends Model
 {
@@ -16,6 +17,7 @@ class Destination extends Model
     use UuidTrait;
     use SearchTrait;
     use ColumnsTrait;
+    use Sluggable; 
 
     protected $guarded = [];
     protected $casts = [
@@ -81,5 +83,19 @@ class Destination extends Model
     public function rattings(): HasMany
     {
         return $this->hasMany(Ratting::class, 'destination_id', 'id');
+    }
+
+     /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }

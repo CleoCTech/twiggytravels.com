@@ -187,17 +187,18 @@ class GeneralContoller extends Controller
         ];
         return Inertia::render('Guest/Pages/Tours', $data);
     }
-    public function showDestination($title)
+    public function showDestination($slug)
     {
-        $title = str_replace('-',' ',$title);
-        $cardData = Destination::whereRaw('LOWER(`title`) LIKE ? ',$title)
-        ->where('status',2)->orWhere(function($query){
-            $query->where('status',3)
-            ->where('publish_time','<=',date('Y-m-d h:i:s'));
-        })->first();
+        $cardData = Destination::where('slug', $slug)->firstOrFail();
+
+        // $cardData = Destination::whereRaw('LOWER(`title`) LIKE ? ',$title)
+        // ->where('status',2)->orWhere(function($query){
+        //     $query->where('status',3)
+        //     ->where('publish_time','<=',date('Y-m-d h:i:s'));
+        // })->first();
         // dd($cardData->destinationCategory->name);
         if($cardData == null){
-            return redirect()->route('tours');
+            return redirect()->route('home');
         }
         $this->pageTitle = $cardData->title;
         $headerImage = '/storage/destinations/cover_images/'.$cardData->cover_image;
@@ -236,6 +237,47 @@ class GeneralContoller extends Controller
         ];
         return Inertia::render('Guest/Pages/Destination/Show', $data);
     }
+    public function showPackage($slug)
+    {
+        $package = Package::where('slug', $slug)->firstOrFail();
+
+        $this->pageTitle = $package->title;
+        $headerImage = '/storage/destinations/cover_images/'.$package->cover_image;
+        // $relatedOffers = Destination::whereHas('destinationCategory', function(Builder $query) use ($cardData) {
+        //     $query->where('name', 'like', $cardData->destinationCategory->name.'%');
+        // })
+        // ->where('status',2)
+        // ->where('id', '!=', $cardData->id)
+        // ->orWhere(function($query){
+        //     $query->where('status',3)
+        //     ->where('publish_time','<=',date('Y-m-d h:i:s'));
+        // })
+        // ->inRandomOrder()->limit(2)
+        // ->get();
+        // if(Str::contains($cardData->destinationCategory->name, 'Local') || Str::contains($cardData->destinationCategory->name, 'local')){
+        //     $url = 'local-destination';
+        // } else {
+        //     $url = 'international-destination';
+        // }
+        // $prices = PriceCategoryBinding::with('priceCategory')
+        // ->where('destination_id', $cardData->id)
+        // ->get();
+        // $rattings = Ratting::where('destination_id', $cardData->id, function ($query) {
+        //     $query->where('status', 2);
+        // })->avg('ratting');
+        // $rattings = round($rattings, 1);
+        $data = [
+            'cardData' => $package,
+            'pageTitle' => $this->pageTitle,
+            'headerImage' => $headerImage,
+            // 'tourType' => $cardData->destinationCategory->name,
+            // 'relatedOffers' => $relatedOffers,
+            // 'url' => $url,
+            // 'prices' => $prices,
+            // 'rattings' => $rattings,
+        ];
+        return Inertia::render('Guest/Pages/Package/Show', $data);
+    }
 
     public function getRatting($destination_id)
     {
@@ -250,17 +292,18 @@ class GeneralContoller extends Controller
         // dd('her');
         if(Auth::user()->user_category == 100){
             $user = AdminUser::select('status','role')->where('email',Auth::user()->email)->first();
-            if($user == null || $user->role == null){
-                Auth::logout();
-                return redirect('/login')->with('error','Oops! your authorization as an admin failed.');
-            }
-            $role = UserRole::find($user->role);
-            if($role == null){
-                Auth::logout();
-                return redirect('/login')->with('error','Oops! the user has not been assigned a role in the system');
-            }
+            // if($user == null || $user->role == null){
+            //     Auth::logout();
+            //     return redirect('/login')->with('error','Oops! your authorization as an admin failed.');
+            // }
+            // $role = UserRole::find($user->role);
+            // if($role == null){
+            //     Auth::logout();
+            //     return redirect('/login')->with('error','Oops! the user has not been assigned a role in the system');
+            // }
+            // // info( $user['profile_category']);
             $user['profile_category'] = 'admin';
-            $user['permissions'] = $role->permissions;
+            // // $user['permissions'] = $role->permissions;
             Auth::user()->profile = $user;
             return redirect('/admin/dashboard');
         }else{

@@ -25,6 +25,11 @@ class HandleInertiaRequests extends Middleware
         {
             return 'admin';
         }
+        if(request()->is('login') or request()->is('register'))
+        {
+            // info('here');
+            return 'blank';
+        }
         return parent::rootView($request);
     }
 
@@ -49,6 +54,14 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $role = 'default';
+        if ($request->user()) {
+            $roles = $request->user()->roles;
+            foreach ($roles as $role) {
+                $role = $role->display_name;
+                // info($role);
+            }
+        }
         return array_merge(parent::share($request), [
             'csrf_token' => csrf_token(),
             'flash' => [
@@ -58,6 +71,7 @@ class HandleInertiaRequests extends Middleware
                 'warning' => fn () => $request->session()->get('warning'),
             ],
             'auth.user' => fn () => $request->user() ? $request->user()->only('id', 'name', 'email','profile_category','user_category') : null,
+            'auth.role' => fn () => $request->user() ? $role : 'default',
             //custom
             'defaultErrors' => config('app.defaultErrors'),
             'config' => [

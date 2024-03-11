@@ -1,6 +1,7 @@
 import './bootstrap';
-import '../css/app.css';
+// import '../css/app.css';
 // import '../css/style.css'
+import '../css/ck-editor.css'; 
 
 import { createApp, h } from 'vue';
 import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
@@ -22,6 +23,7 @@ import { plugin as dialogPlugin } from 'gitart-vue-dialog'
 import { Icon } from '@iconify/vue';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+import PrimeVue from 'primevue/config';
 
 import $ from 'jquery';
 window.$ = $;
@@ -33,65 +35,102 @@ import SystemLayout from '@/System/Layouts/AppLayout.vue'
 // const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
+const resolvePage = (name) => {
+  return resolvePageComponent(`./${name}.vue`, import.meta.glob("./**/*.vue"));
+};
+
+
 createInertiaApp({
+
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => {
-        return new Promise((resolve) => {
-          if (name.startsWith('Guest/')) {
-            import(`./${name}.vue` /* @vite-ignore */)
-              .then((module) => {
-                if (!module.default) {
-                  console.error(`Module or module.default is undefined for page '${name}'.`);
-                  resolve(null);
-                } else {
-                  if (name.startsWith('Guest/Auth/')) {
-                    module.default.layout = GuestBlankLayout;
-                  } else {
-                    module.default.layout = GuestLayout;
-                  }
-                  resolve(module.default);
-                }
-              })
-              .catch((error) => {
-                console.error(`Error loading page component '${name}':`, error);
-                resolve(null);
-              });
-          } else if (name.startsWith('Admin/')) {
-            import(`./${name}.vue` /* @vite-ignore */)
-              .then((module) => {
-                if (!module.default) {
-                  console.error(`Module or module.default is undefined for page '${name}'.`);
-                  resolve(null);
-                } else {
-                  module.default.layout = SystemLayout;
-                  resolve(module.default);
-                }
-              })
-              .catch((error) => {
-                console.error(`Error loading page component '${name}':`, error);
-                resolve(null);
-              });
-          } else if (name.startsWith('System/')) {
-            import(`./${name}.vue` /* @vite-ignore */)
-              .then((module) => {
-                if (!module.default) {
-                  console.error(`Module or module.default is undefined for page '${name}'.`);
-                  resolve(null);
-                } else {
-                  module.default.layout = SystemLayout;
-                  resolve(module.default);
-                }
-              })
-              .catch((error) => {
-                console.error(`Error loading page component '${name}':`, error);
-                resolve(null);
-              }); 
-          } else {
-            // Handle other cases or return null as needed.
-            resolve(null);
+
+    resolve: async (name) => {
+      if (name.startsWith('Guest/')) {
+          const page = await resolvePage(name);
+          if (!page) {
+              console.error(`Page component '${name}' not found.`);
+              return;
           }
-        });
-      },
+  
+          const module = await page;
+  
+          if (!module || !module.default) {
+              console.error(`Module or module.default is undefined for page '${name}'.`);
+              return;
+          }
+  
+          if (name.startsWith('Guest/Auth/')) {
+              if (name === 'Guest/Auth/Login') {
+                  module.default.layout = GuestBlankLayout;
+              } else if (name === 'Guest/Auth/ResetPassword') {
+                  module.default.layout = GuestBlankLayout;
+              } else if (name === 'Guest/Auth/VerifyEmail') {
+                  module.default.layout = GuestBlankLayout;
+              }else if (name === 'Guest/Auth/ForgotPassword') {
+                  module.default.layout = GuestBlankLayout;
+              } else if (name === 'Guest/Auth/ConfirmPassword') {
+                  module.default.layout = GuestBlankLayout;
+              }
+              else {
+                  module.default.layout = GuestBlankLayout;
+              }
+          } else {
+              module.default.layout = GuestLayout;
+          }
+      } else if (name.startsWith('Admin/') || name.startsWith('System/') || name.startsWith('Auth/')) {
+          const page = await resolvePage(name);
+  
+          if (!page) {
+              console.error(`Page component '${name}' not found.`);
+              return;
+          }
+  
+          const module = await page;
+  
+          if (!module || !module.default) {
+              console.error(`Module or module.default is undefined for page '${name}'.`);
+              return;
+          }
+  
+          module.default.layout = SystemLayout;
+      } else if(name.startsWith('Pages/Auth/')) {
+          console.log('Pages/Auth/');
+          const page = await resolvePage(name);
+  
+          if (!page) {
+              console.error(`Page component '${name}' not found.`);
+              return;
+          }
+  
+          const module = await page;
+  
+          if (!module || !module.default) {
+              console.error(`Module or module.default is undefined for page '${name}'.`);
+              return;
+          }
+          module.default.layout = GuestBlankLayout;
+      } else if(name.startsWith('Auth/')) {
+          console.log('Auth/');
+          const page = await resolvePage(name);
+  
+          if (!page) {
+              console.error(`Page component '${name}' not found.`);
+              return;
+          }
+  
+          const module = await page;
+  
+          if (!module || !module.default) {
+              console.error(`Module or module.default is undefined for page '${name}'.`);
+              return;
+          }
+          module.default.layout = GuestBlankLayout;
+      } else {
+          console.log('else');
+      }
+  
+      return resolvePage(name);
+  },
 
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
@@ -100,6 +139,8 @@ createInertiaApp({
 
             .use(Notifications)
             .use(VueLoading)
+            .use(PrimeVue)
+            // .use(PrimeVue, { unstyled: true })
             .component('loading',VueLoading)
             .component('Head',Head)
             .component('Link',Link)

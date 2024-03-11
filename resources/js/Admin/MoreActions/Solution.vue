@@ -12,7 +12,7 @@
     import MenuBarTabsMixin from '@/System/Mixins/MenuBarTabsMixin.js'
     import { usePage } from '@inertiajs/vue3'
     import xLoading from '@/Components/Loading.vue'
-    import {Inertia} from "@inertiajs/inertia";
+   import { router } from '@inertiajs/vue3'
     export default{
         components:{xLoading},
         mixins:[MenuBarTabsMixin],

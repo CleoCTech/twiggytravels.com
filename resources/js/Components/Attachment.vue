@@ -1,18 +1,35 @@
 <template>
     <div class="px-1">
         <div class="flex gap-1 sm:gap-2 items-center text-gray-300">
-            <h3 class="text-xs px-2 underline py-1 font-semibold">Attachments</h3>
-            <button @click="this.isNew = !this.isNew" class="flex gap-1 text-xs items-center"><unicon name="plus" fill="black" class="icon-xs"/>New</button>
+            <!-- <h3 class="text-xs px-2 underline py-1 font-semibold">Attachments</h3> -->
+            <h3 class=" py-1 text-slate-800 underline dark:text-slate-100 font-bold ">Attachments</h3>
+
+            <!-- <button @click="this.isNew = !this.isNew" class="flex gap-1 text-xs items-center">
+                <unicon name="plus" fill="black" class="icon-xs"/>
+                New
+            </button> -->
+            <div  class="m-1.5">
+                <button @click="this.isNew = !this.isNew" class="btn-xs bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                        <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                      </svg>
+                    New
+                </button>
+            </div>
+
         </div>
         <div v-if="!isLoading">
             <form v-if="isNew" v-on:submit.prevent="submitAttachment" action="#" method="POST" enctype="multipart/form-data">
-                <div class="flex gap-1 flex-col md:flex-row pb-1 px-4 md:px-0">
-                    <input type="text" v-model="form.description" class="py-0 w-28 text-xs pl-1" placeholder="description" required>
-                    <input type="file" @input="onFileChange($event)" ref="input" class="py-0 w-28 text-xs" required>
-                    <button type="submit" class="text-xs bg-yellow-500 rounded-sm text-white px-1 w-18">Upload</button>
+                <div class="flex gap-3 flex-col md:flex-row pb-1 px-4 md:px-0">
+                    <!-- <input type="text" v-model="form.description" class="py-0 w-28 text-xs pl-1" placeholder="description" required> -->
+                    <input id="small" v-model="form.description" class="form-input w-full px-2 py-1" type="text" placeholder="description" required/>
+                    <input type="file" @input="onFileChange($event)" ref="input" class="form-input w-full px-2 py-1" required>
+                    
+                    <button type="submit" class="btn-xs bg-indigo-500 hover:bg-indigo-400 text-white">Upload</button>
+                    <!-- <button type="submit" class="text-xs bg-yellow-500 rounded-sm text-white px-1 w-18">Upload</button> -->
                 </div>
             </form>
-            <x-table>
+            <x-table class="-ml-1">
                 <template #thead>
                     <x-tableth>Description</x-tableth>
                     <x-tableth>Action</x-tableth>
@@ -21,9 +38,15 @@
                     <x-tabletr v-for="(attachment,index) in attachments" v-bind:key="index" :row="attachment.id+'#'+index" :url="''">
                         <x-tabletd>{{attachment.description}}</x-tabletd>
                         <x-tabletd>
-                            <span class="flex gap-1 items-center">
-                                <a :href="'/system/attachment/show/'+attachment.id" class="text-xs flex items-center gap-1" target="_blank"><unicon name="eye" fill="black" class="icon-xs"/>View</a>
-                                <button @click="deleteAttachment(attachment.id)" class="text-xs flex items-center gap-1"><unicon name="times" fill="red" class="icon-xs"/> Delete</button>
+                            <span class="flex gap-3 items-center">
+                                <a :href="'/system/attachment/show/'+attachment.uuid" class="text-xs flex items-center gap-1" target="_blank">
+                                    <unicon name="eye" fill="black" class="icon-xs"/>
+                                    <Icon icon="mdi:eye-outline" class="text-indigo-500" />
+                                   
+                                    View
+                                </a>
+                                <button @click="deleteAttachment(attachment.uuid)" class="text-xs flex items-center gap-1 text-rose-500">  <Icon icon="mdi:delete-circle-outline" class="text-rose-500" /> Delete
+                                </button>
                             </span>
                         </x-tabletd>
                     </x-tabletr>
@@ -113,8 +136,9 @@
 
                     this.getAttachments();
                     this.resetData();
-                    // this.isLoading = false;
+                    this.isLoading = false;
                 }).catch((error) => {
+                    console.log(error.response);
                     if(error.response.status == 422){
                         var errors= [];
                         errors = error.response.data.errors;
@@ -143,11 +167,11 @@
                 this.form.attachment = '';
                 this.isNew = false;
             },
-            deleteAttachment(id){
+            deleteAttachment(uuid){
                 if(confirm("Do you really want to delete this attachment?")){
                     this.isLoading = true;
                     var self = this;
-                    axios.delete('/system/attachment/delete/'+id).then(response => {
+                    axios.delete('/system/attachment/delete/'+uuid).then(response => {
                         this.$notify({
                             text:'Deleted Successfully',
                             type:'error'

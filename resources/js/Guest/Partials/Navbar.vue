@@ -6,6 +6,8 @@ import {useNotify} from "@/Composables/useNotify";
 
 const {notification} = useNotify();
 
+const navBarData = ref({});
+
 const footerData = ref({});
 const isLoading = ref(true);
 const showBookAppointment  = ref(false)
@@ -21,9 +23,19 @@ let clickHandler2 = (event) => {
     showBookAppointment.value = false;
   }
 }
+const getNavData = () => {
+  axios.get('/topbar-data').then(response => {
+    navBarData.value = response.data;
+    isLoading.value = false;
+  })
+  .catch((error) => {
+    isLoading.value = false;
+  });
+};
 
 onMounted(() => {
     getFooterData();
+    getNavData();
     document.addEventListener('click', clickHandler);
     document.addEventListener('click', clickHandler2);
 });
@@ -49,6 +61,7 @@ function getFooterData(){
 }
 
 onUnmounted(() => {
+  
   // Clean up resources, remove event listeners, etc.
   document.removeEventListener('click', clickHandler);
   document.removeEventListener('click', clickHandler2);
@@ -222,15 +235,17 @@ onUnmounted(() => {
     </header> -->
 
     <header v-else >
-        <a href="http://" class="brand">Twiggy Travels</a>
+        <Link href="/" class="brand">
+          Twiggy Travels
+        </Link>
         <div class="menu-btn"></div>
         <div class="navigation">
             <div class="navigation-items">
-                <a href="http://">Home</a>
-                <a href="http://">About</a>
-                <a href="http://">Explore</a>
-                <a href="http://">Gallery</a>
-                <a href="http://">Contact</a>
+                <Link :href="route('home')">Home</Link>
+                <Link href="/">About</Link>
+                <Link href="/">Explore</Link>
+                <Link href="/">Gallery</Link>
+                <a href="/login">Login</a>
             </div>
         </div>
     </header>

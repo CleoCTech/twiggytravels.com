@@ -35,6 +35,12 @@
         "vue-social-sharing": "^4.0.0-alpha4"
     },
     "dependencies": {
-        "jquery": "^3.7.1"
+        "@vuepic/vue-datepicker": "^8.0.0",
+        "jquery": "^3.7.1",
+        "primevue": "^3.48.0",
+        "@vueuse/core": "^10.6.1",
+        "chart.js": "^4.4.1",
+        "vue-flatpickr-component": "^11.0.3",
+        "vue-router": "^4.2.5"
     }
 }

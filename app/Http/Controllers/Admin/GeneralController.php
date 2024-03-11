@@ -14,7 +14,7 @@ class GeneralController extends Controller
         $this->middleware('admin-auth')->only('dashboard');
     }
     public function dashboard(){
-        // dd('here');
+        // info('here');
         return Inertia::render('Admin/Pages/Dashboard');
     }
 
